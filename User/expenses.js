@@ -15,7 +15,6 @@ router.post("/expense", async (req, res) => {
       },
       { new: true }
     );
-    console.log("expense added for category", user);
 
     if (!user) {
       const userWithNewCategory = await User.findByIdAndUpdate(
@@ -36,10 +35,11 @@ router.post("/expense", async (req, res) => {
       if (!userWithNewCategory) {
         return res.status(404).json({ error: "User not found" });
       }
+      return res.status(200).json({ expenses: userWithNewCategory.expenses });
     }
-    return res.status(200).json({ msg: `Expense updated ${user.expenses}` });
+    return res.status(200).json({ expenses: user.expenses });
   } catch (error) {
-    return res.status(400).json({ error });
+    return res.status(400).json({ msg: error });
   }
 });
 
